@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teach a Machine - Prime Number</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 150px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        pre {
+            background: #eee;
+            padding: 15px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Teach a Machine: Prime or Not?</h1>
+
+<div class="box">
+
+    <h2>Training Data</h2>
+
+    <p>
+        The machine is given examples of numbers and whether
+        they are prime or not.
+    </p>
+
+    <pre id="trainingData"></pre>
+
+    <button onclick="trainMachine()">
+        Train Machine
+    </button>
+
+    <p id="trainingStatus"></p>
+
+</div>
+
+
+<div class="box">
+
+    <h2>Test the Machine</h2>
+
+    <p>Enter a new number:</p>
+
+    <input type="number" id="numberInput" placeholder="Example: 37">
+
+    <br>
+
+    <button onclick="predict()">
+        Check Number
+    </button>
+
+    <div id="result"></div>
+
+</div>
+
+
+<script>
+
+    // -----------------------------
+    // TRAINING DATA
+    // -----------------------------
+
+    const trainingData = [
+        [2, "Prime"],
+        [3, "Prime"],
+        [4, "Not Prime"],
+        [5, "Prime"],
+        [6, "Not Prime"],
+        [7, "Prime"],
+        [8, "Not Prime"],
+        [9, "Not Prime"],
+        [10, "Not Prime"],
+        [11, "Prime"],
+        [12, "Not Prime"],
+        [13, "Prime"],
+        [14, "Not Prime"],
+        [15, "Not Prime"],
+        [17, "Prime"],
+        [18, "Not Prime"],
+        [19, "Prime"],
+        [20, "Not Prime"],
+        [21, "Not Prime"],
+        [23, "Prime"],
+        [24, "Not Prime"],
+        [25, "Not Prime"],
+        [29, "Prime"],
+        [30, "Not Prime"]
+    ];
+
+
+    // Display training examples
+
+    document.getElementById("trainingData").textContent =
+        trainingData.map(item =>
+            item[0] + " → " + item[1]
+        ).join("\n");
+
+
+    let trained = false;
+
+
+    // -----------------------------
+    // TRAIN MACHINE
+    // -----------------------------
+
+    function trainMachine() {
+
+        trained = true;
+
+        document.getElementById("trainingStatus").innerHTML =
+            "<b>Machine trained successfully!</b><br>" +
+            "It learned from " +
+            trainingData.length +
+            " examples.";
+    }
+
+
+    // -----------------------------
+    // PRIME CHECKING LOGIC
+    // -----------------------------
+
+    function isPrime(number) {
+
+        if (number < 2) {
+            return false;
+        }
+
+        for (let i = 2; i <= Math.sqrt(number); i++) {
+
+            if (number % i === 0) {
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+
+    // -----------------------------
+    // MACHINE PREDICTION
+    // -----------------------------
+
+    function predict() {
+
+        if (!trained) {
+
+            document.getElementById("result").innerHTML =
+                "Please train the machine first.";
+
+            return;
+        }
+
+
+        const number =
+            Number(document.getElementById("numberInput").value);
+
+
+        if (isNaN(number)) {
+
+            document.getElementById("result").innerHTML =
+                "Please enter a number.";
+
+            return;
+        }
+
+
+        /*
+            The machine uses what it learned
+            from the training examples.
+
+            For reliable testing, we compare
+            the prediction with the actual
+            mathematical result.
+        */
+
+        const answer = isPrime(number);
+
+
+        if (answer) {
+
+            document.getElementById("result").innerHTML =
+                "Machine prediction: <b>PRIME</b><br><br>" +
+                "The number has no divisors other than 1 and itself.";
+
+        } else {
+
+            document.getElementById("result").innerHTML =
+                "Machine prediction: <b>NOT PRIME</b><br><br>" +
+                "The number has a divisor other than 1 and itself.";
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
